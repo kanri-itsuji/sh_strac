@@ -194,6 +194,46 @@
   .radio-row{display:flex;gap:18px;padding:8px 0;}
   .radio-row label{display:flex;align-items:center;gap:6px;font-size:.88rem;}
 
+  .stepper{display:flex;align-items:center;}
+  .stepper .step-btn{
+    width:38px;height:38px;
+    border:1px solid var(--ink-soft);
+    background:var(--paper);
+    color:var(--forest);
+    font-size:1.2rem;
+    line-height:1;
+    font-family:'JetBrains Mono',monospace;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    user-select:none;
+    touch-action:manipulation;
+    padding:0;
+  }
+  .stepper .step-btn:first-child{border-radius:2px 0 0 2px;border-right:none;}
+  .stepper .step-btn:last-child{border-radius:0 2px 2px 0;border-left:none;}
+  .stepper .step-btn:active{background:var(--brass);color:var(--paper);border-color:var(--brass);}
+  .stepper input[type=number]{
+    width:60px;
+    text-align:center;
+    border:1px solid var(--ink-soft);
+    border-left:none;border-right:none;
+    height:38px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.95rem;
+    background:var(--paper);
+    color:var(--ink);
+    padding:0;
+    -moz-appearance:textfield;
+  }
+  .stepper input[type=number]::-webkit-outer-spin-button,
+  .stepper input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .stepper input:focus{outline:none;background:var(--paper-alt);}
+
+  /* 倍率(RITU)はネイティブの上下ボタンを非表示にする */
+  #mgf-RITU{-moz-appearance:textfield;}
+  #mgf-RITU::-webkit-outer-spin-button,
+  #mgf-RITU::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+
   .btn{
     background:var(--forest);
     color:var(--paper);
@@ -421,7 +461,7 @@
 
     <!-- ============ F-STRAC ============ -->
     <section class="panel" id="panel-f">
-      <h2>F-STRAC（販促効果測定）</h2>
+      <h2>F-STRAC（最前線STRAC）</h2>
       <p class="desc">P・V・Q・F・EH・FM・N・H のうち算出したい1項目を空欄にしてください。</p>
       <form id="form-f">
         <div class="field-row"><label>P<span class="field-desc">販売単価</span></label><input type="number" step="any" id="f-P" placeholder="空欄で計算"></div>
@@ -467,16 +507,52 @@
       <h2>MGF（固定費積算）</h2>
       <p class="desc">人員・設備などの内訳から固定費（F）を積み上げます。計算後、そのまま「経営計画」へ進めます。</p>
       <form id="form-mgf">
-        <div class="field-row"><label>何期<span class="field-desc">KI</span></label><input type="number" step="any" id="mgf-KI" value="1"></div>
-        <div class="field-row"><label>人数<span class="field-desc">N</span></label><input type="number" step="any" id="mgf-N" value="0"></div>
+        <div class="field-row"><label>何期<span class="field-desc">KI</span></label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="mgf-KI" data-delta="-1" aria-label="減らす">−</button>
+            <input type="number" inputmode="numeric" min="1" step="1" id="mgf-KI" value="1">
+            <button type="button" class="step-btn" data-target="mgf-KI" data-delta="1" aria-label="増やす">＋</button>
+          </div>
+        </div>
+        <div class="field-row"><label>人数<span class="field-desc">N</span></label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="mgf-N" data-delta="-1" aria-label="減らす">−</button>
+            <input type="number" inputmode="numeric" min="0" step="1" id="mgf-N" placeholder="0">
+            <button type="button" class="step-btn" data-target="mgf-N" data-delta="1" aria-label="増やす">＋</button>
+          </div>
+        </div>
         <div class="field-row"><label>倍率<span class="field-desc">RITU</span></label><input type="number" step="any" id="mgf-RITU" value="1"></div>
-        <div class="field-row"><label>機械台数<span class="field-desc">D</span></label><input type="number" step="any" id="mgf-D" value="0"></div>
-        <div class="field-row"><label>金利<span class="field-desc">F3</span></label><input type="number" step="any" id="mgf-F3" value="0"></div>
-        <div class="field-row"><label>倉庫台数<span class="field-desc">SO</span></label><input type="number" step="any" id="mgf-SO" value="0"></div>
-        <div class="field-row"><label>チップ枚数<span class="field-desc">CH</span></label><input type="number" step="any" id="mgf-CH" value="0"></div>
-        <div class="field-row"><label>特急枚数<span class="field-desc">EX</span></label><input type="number" step="any" id="mgf-EX" value="0"></div>
+        <div class="field-row"><label>機械台数<span class="field-desc">D</span></label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="mgf-D" data-delta="-1" aria-label="減らす">−</button>
+            <input type="number" inputmode="numeric" min="0" step="1" id="mgf-D" placeholder="0">
+            <button type="button" class="step-btn" data-target="mgf-D" data-delta="1" aria-label="増やす">＋</button>
+          </div>
+        </div>
+        <div class="field-row"><label>金利<span class="field-desc">F3</span></label><input type="number" step="any" id="mgf-F3" placeholder="0"></div>
+        <div class="field-row"><label>倉庫台数<span class="field-desc">SO</span></label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="mgf-SO" data-delta="-1" aria-label="減らす">−</button>
+            <input type="number" inputmode="numeric" min="0" step="1" id="mgf-SO" placeholder="0">
+            <button type="button" class="step-btn" data-target="mgf-SO" data-delta="1" aria-label="増やす">＋</button>
+          </div>
+        </div>
+        <div class="field-row"><label>チップ枚数<span class="field-desc">CH</span></label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="mgf-CH" data-delta="-1" aria-label="減らす">−</button>
+            <input type="number" inputmode="numeric" min="0" step="1" id="mgf-CH" placeholder="0">
+            <button type="button" class="step-btn" data-target="mgf-CH" data-delta="1" aria-label="増やす">＋</button>
+          </div>
+        </div>
+        <div class="field-row"><label>特急枚数<span class="field-desc">EX</span></label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="mgf-EX" data-delta="-1" aria-label="減らす">−</button>
+            <input type="number" inputmode="numeric" min="0" step="1" id="mgf-EX" placeholder="0">
+            <button type="button" class="step-btn" data-target="mgf-EX" data-delta="1" aria-label="増やす">＋</button>
+          </div>
+        </div>
         <div class="field-row"><label>減価償却<span class="field-desc">F5</span></label><input type="number" step="any" id="mgf-F5" value="10"></div>
-        <div class="field-row"><label>その他F<span class="field-desc">FEX</span></label><input type="number" step="any" id="mgf-FEX" value="0"></div>
+        <div class="field-row"><label>その他F<span class="field-desc">FEX</span></label><input type="number" step="any" id="mgf-FEX" placeholder="0"></div>
         <button type="submit" class="btn">Fを積算する</button>
       </form>
       <div id="mgf-result"></div>
@@ -485,17 +561,41 @@
     <!-- ============ K 経営計画 ============ -->
     <section class="panel" id="panel-k">
       <h2>経営計画（K）</h2>
-      <p class="desc">固定費（F）と目標利益（G）から必要なMQ・数量・行数（必要枚数）を計画します。</p>
+      <p class="desc">固定費（F）と目標利益（G）から必要なMQ・数量・行数を計画します。</p>
       <div id="k-from-mgf" class="baseline-box hidden"></div>
       <form id="form-k">
         <div class="field-row"><label>F<span class="field-desc">固定費</span></label><input type="number" step="any" id="k-F" value="0"></div>
         <div class="field-row"><label>G<span class="field-desc">目標利益</span></label><input type="number" step="any" id="k-G" value="0"></div>
-        <div class="field-row"><label>V<span class="field-desc">変動費単価</span></label><input type="number" step="any" id="k-V" value="0"></div>
+        <div class="field-row"><label>V<span class="field-desc">変動費単価</span></label><input type="number" step="any" id="k-V" value="15"></div>
         <div class="field-row"><label>P<span class="field-desc">販売単価</span></label><input type="number" step="any" id="k-P" value="30"></div>
-        <div class="field-row"><label>製造能力<span class="field-desc">SEI</span></label><input type="number" step="any" id="k-SEI" value="1"></div>
-        <div class="field-row"><label>販売能力<span class="field-desc">HAN</span></label><input type="number" step="any" id="k-HAN" value="2"></div>
-        <div class="field-row"><label>繰り枚数<span class="field-desc">JIK</span></label><input type="number" step="any" id="k-JIK" value="0"></div>
-        <div class="field-row"><label>リスクカード<span class="field-desc">RI</span></label><input type="number" step="any" id="k-RI" value="0"></div>
+        <div class="field-row"><label>製造能力<span class="field-desc">SEI</span></label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="k-SEI" data-delta="-1" aria-label="減らす">−</button>
+            <input type="number" inputmode="numeric" min="0" step="1" id="k-SEI" value="1">
+            <button type="button" class="step-btn" data-target="k-SEI" data-delta="1" aria-label="増やす">＋</button>
+          </div>
+        </div>
+        <div class="field-row"><label>販売能力<span class="field-desc">HAN</span></label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="k-HAN" data-delta="-1" aria-label="減らす">−</button>
+            <input type="number" inputmode="numeric" min="0" step="1" id="k-HAN" value="2">
+            <button type="button" class="step-btn" data-target="k-HAN" data-delta="1" aria-label="増やす">＋</button>
+          </div>
+        </div>
+        <div class="field-row"><label>次繰枚数<span class="field-desc">JIK</span></label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="k-JIK" data-delta="-1" aria-label="減らす">−</button>
+            <input type="number" inputmode="numeric" min="0" step="1" id="k-JIK" placeholder="0">
+            <button type="button" class="step-btn" data-target="k-JIK" data-delta="1" aria-label="増やす">＋</button>
+          </div>
+        </div>
+        <div class="field-row"><label>リスクカード<span class="field-desc">RI</span></label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="k-RI" data-delta="-1" aria-label="減らす">−</button>
+            <input type="number" inputmode="numeric" min="0" step="1" id="k-RI" placeholder="0">
+            <button type="button" class="step-btn" data-target="k-RI" data-delta="1" aria-label="増やす">＋</button>
+          </div>
+        </div>
         <button type="submit" class="btn">計画する</button>
       </form>
       <div id="k-result"></div>
@@ -826,8 +926,8 @@ document.getElementById('form-cf').addEventListener('submit', e=>{
 let mgfF = null;
 document.getElementById('form-mgf').addEventListener('submit', e=>{
   e.preventDefault();
-  const KI=num('mgf-KI'), N=num('mgf-N'), RITU=num('mgf-RITU'), D=num('mgf-D'), F3=num('mgf-F3'),
-        SO=num('mgf-SO'), CH=num('mgf-CH'), EX=num('mgf-EX'), F5=num('mgf-F5'), FEX=num('mgf-FEX');
+  const KI=Math.max(1, num('mgf-KI') ?? 1), N=num('mgf-N') ?? 0, RITU=num('mgf-RITU') ?? 1, D=num('mgf-D') ?? 0, F3=num('mgf-F3') ?? 0,
+        SO=num('mgf-SO') ?? 0, CH=num('mgf-CH') ?? 0, EX=num('mgf-EX') ?? 0, F5=num('mgf-F5') ?? 10, FEX=num('mgf-FEX') ?? 0;
   const K1 = roundB((20+(KI-1)*2)*RITU);
   const K2 = roundB((10+(KI-1))*RITU);
   const F1 = N*K1;
@@ -859,8 +959,8 @@ document.getElementById('form-mgf').addEventListener('submit', e=>{
 /* ---------------- K 経営計画 ---------------- */
 document.getElementById('form-k').addEventListener('submit', e=>{
   e.preventDefault();
-  const F=num('k-F'), G=num('k-G'), V=num('k-V'), P=num('k-P');
-  const SEI=num('k-SEI'), HAN=num('k-HAN'), JIK=num('k-JIK'), RI=num('k-RI');
+  const F=num('k-F') ?? 0, G=num('k-G') ?? 0, V=num('k-V') ?? 0, P=num('k-P') ?? 0;
+  const SEI=num('k-SEI') ?? 1, HAN=num('k-HAN') ?? 1, JIK=num('k-JIK') ?? 0, RI=num('k-RI') ?? 0;
   const MQ = F+G;
   const M = P-V;
   const Q = ceilB(MQ/M);
@@ -877,6 +977,33 @@ document.getElementById('form-k').addEventListener('submit', e=>{
   html += row('必要行数（枚数）', GYOU, {unit:'行', highlight:true});
   document.getElementById('k-result').innerHTML = tape('経営計画（K）結果', html);
   shared.MQ = MQ; shared.V = V; shared.F = F; shared.P = P;
+});
+
+/* ---------------- steppers (整数専用 +/- ボタン) ---------------- */
+const INT_ONLY_FIELDS = ['mgf-KI','mgf-N','mgf-D','mgf-SO','mgf-CH','mgf-EX','k-SEI','k-HAN','k-JIK','k-RI'];
+const INT_MIN = { 'mgf-KI': 1 }; // 何期は1以上、他は0以上
+INT_ONLY_FIELDS.forEach(id=>{
+  const el = document.getElementById(id);
+  const min = INT_MIN[id] ?? 0;
+  el.addEventListener('input', ()=>{
+    el.value = el.value.replace(/[^0-9]/g,'');
+  });
+  el.addEventListener('blur', ()=>{
+    let v = parseInt(el.value, 10);
+    if(isNaN(v) || v < min) v = min;
+    el.value = v;
+  });
+});
+document.querySelectorAll('.step-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const el = document.getElementById(btn.dataset.target);
+    const min = INT_MIN[btn.dataset.target] ?? 0;
+    const delta = parseInt(btn.dataset.delta, 10);
+    let v = parseInt(el.value, 10);
+    if(isNaN(v)) v = min;
+    v = Math.max(min, v + delta);
+    el.value = v;
+  });
 });
 
 /* ---------------- nav ---------------- */
