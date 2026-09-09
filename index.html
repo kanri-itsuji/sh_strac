@@ -975,6 +975,8 @@ document.getElementById('form-k').addEventListener('submit', e=>{
   html += row('PQ（売上高）', PQ)+row('VQ（変動費）', VQ)+row('MQ（限界利益）', MQr)+row('Q0（損益分岐点数量）', Q0);
   html += rule();
   html += row('必要行数（枚数）', GYOU, {unit:'行', highlight:true});
+  html += rule();
+  html += row('f/m比率', (F/MQ*100).toFixed(1), {unit:'%'});
   document.getElementById('k-result').innerHTML = tape('経営計画（K）結果', html);
   shared.MQ = MQ; shared.V = V; shared.F = F; shared.P = P;
 });
